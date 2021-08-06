@@ -4,7 +4,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -39,7 +38,18 @@ const TodoItem = ({ task, onTaskUpdate, isNewTask }) => {
       autoFocus
     >
       <ListItemIcon>
-        <IconButton onClick={() => onTaskUpdate(draftTask)} aria-label="add">
+        <IconButton
+          onClick={() => {
+            onTaskUpdate(draftTask);
+            setDraftTask({
+              id: 'new',
+              title: '',
+              status: 'incomplete',
+              description: '',
+            });
+          }}
+          aria-label="add"
+        >
           <AddCircleOutlineIcon />
         </IconButton>
       </ListItemIcon>
@@ -98,7 +108,7 @@ TodoItem.defaultProps = {
   isNewTask: false,
   task:
     {
-      id: '',
+      id: 'new',
       title: '',
       status: 'incomplete',
       description: '',
@@ -117,7 +127,6 @@ TodoItem.propTypes = {
       description: propTypes.string,
       dateCreated: propTypes.string,
     }),
-
 };
 
 export default TodoItem;

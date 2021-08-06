@@ -1,5 +1,5 @@
-import { hot } from 'react-hot-loader';
 import React from 'react';
+import { hot } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import configureStore from './store/index';
 import './App.css';
