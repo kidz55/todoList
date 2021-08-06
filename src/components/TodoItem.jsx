@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -8,77 +8,107 @@ import TextField from '@material-ui/core/TextField';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import Checkbox from '@material-ui/core/Checkbox';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { makeStyles } from '@material-ui/core/styles';
 import propTypes from 'prop-types';
+import Form from './Form';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   completed: {
     textDecoration: 'line-through',
   },
 }));
 
-const TodoItem = ({ task, updateTask }) => {
+const TodoItem = ({ task, onTaskUpdate, isNewTask }) => {
   const classes = useStyles();
   const [isEditing, setEditing] = useState(false);
+  const [draftTask, setDraftTask] = useState(task);
+
+  useEffect(() => {
+    setDraftTask(task);
+  }, [task]);
+
   const toggleEditMode = () => {
     setEditing(!isEditing);
   };
-  return (
+
+  const newItem = () => (
     <ListItem
-      key={task.id}
+      key="new-task"
       dense
+      autoFocus
+    >
+      <ListItemIcon>
+        <IconButton onClick={() => onTaskUpdate(draftTask)} aria-label="add">
+          <AddCircleOutlineIcon />
+        </IconButton>
+      </ListItemIcon>
+      <Form form={draftTask} onUpdate={setDraftTask} />
+    </ListItem>
+  );
+
+  const item = () => (
+    <ListItem
+      key={draftTask.id}
+      dense
+      divider
     >
       <ListItemIcon>
         <Checkbox
           edge="start"
-          checked={task.status === 'completed'}
+          checked={draftTask.status === 'completed'}
           tabIndex={-1}
           disableRipple
-          inputProps={{ 'aria-labelledby': task.id }}
+          onChange={(event) => {
+            setDraftTask({ ...draftTask, status: event.target.checked ? 'completed' : 'incomplete' });
+            onTaskUpdate(draftTask);
+          }}
+          inputProps={{ 'aria-labelledby': draftTask.id }}
         />
       </ListItemIcon>
-      { !isEditing && (
-      <ListItemText className={task.status === 'completed' ? classes.completed : ''} primary={task.title} secondary={task.description} />
-      )}
-      { isEditing && (
-      <form noValidate autoComplete="off">
-        <TextField
-          id={`title-${task.id}`}
-          defaultValue={task.title}
-          label="title"
-        />
-        <TextField
-          id={`desc-${task.id}`}
-          label="description"
-          multiline
-          maxRows={4}
-          defaultValue={task.description}
-        />
-      </form>
+      { isEditing ? (
+        <Form form={draftTask} onUpdate={setDraftTask} />
+      ) : (
+        <ListItemText className={draftTask.status === 'completed' ? classes.completed : ''} primary={draftTask.title} secondary={draftTask.description} />
       )}
       <ListItemSecondaryAction>
-        <IconButton onClick={() => toggleEditMode()} edge="end" aria-label="edit">
-          { isEditing ? (<SaveAltIcon />) : (<EditRoundedIcon />)}
-        </IconButton>
+        { isEditing ? (
+          <IconButton
+            onClick={() => {
+              onTaskUpdate(draftTask);
+              toggleEditMode();
+            }}
+            edge="end"
+            aria-label="save"
+          >
+            <SaveAltIcon />
+          </IconButton>
+        ) : (
+          <IconButton onClick={() => toggleEditMode()} edge="end" aria-label="edit">
+            <EditRoundedIcon />
+          </IconButton>
+        )}
       </ListItemSecondaryAction>
     </ListItem>
   );
+  return isNewTask ? newItem() : item();
 };
 
 TodoItem.defaultProps = {
+  isNewTask: false,
   task:
     {
-      id: '1234',
-      title: 'my task 1',
-      status: 'incompleted',
-      description: 'description 1',
-      dateCreated: 'August 19, 1975 23:17:30',
+      id: '',
+      title: '',
+      status: 'incomplete',
+      description: '',
     }
   ,
 };
 
 TodoItem.propTypes = {
-  updateTask: propTypes.func.isRequired,
+  onTaskUpdate: propTypes.func.isRequired,
+  isNewTask: propTypes.bool,
   task:
     propTypes.shape({
       id: propTypes.string,

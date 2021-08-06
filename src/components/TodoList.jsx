@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import propTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import TodoItem from './TodoItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,21 +18,26 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = ({ tasks }) => {
   const classes = useStyles();
 
-  const handleToggle = (task) => () => {
+  const updateTask = (task) => {
     console.log(task);
     // go to saga
   };
 
-  const addTask = () => {
+  const addTask = (task) => {
     // go to saga
+    console.log(task);
   };
 
   return (
     <List className={classes.root}>
       {tasks.map((task) => (
-        <TodoItem key={task.id} task={task} updateTask={handleToggle(task)} />
+        <TodoItem
+          key={task.id}
+          task={task}
+          onTaskUpdate={(tsk) => updateTask(tsk)}
+        />
       ))}
-      <ListItem key="add-item" dense button onClick={addTask} />
+      <TodoItem key="add-task" isNewTask onTaskUpdate={(tsk) => addTask(tsk)} />
     </List>
   );
 };
