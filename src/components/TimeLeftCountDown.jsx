@@ -20,6 +20,7 @@ const TimeLeftCountDown = ({ deadLine, onCountdownOver }) => {
     }, 1000);
     // eslint-disable-next-line consistent-return
     return () => clearInterval(intervalId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
   const getTimeLeft = useMemo(
