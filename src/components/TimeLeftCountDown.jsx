@@ -13,7 +13,6 @@ const TimeLeftCountDown = ({ deadLine, onCountdownOver }) => {
   useEffect(() => {
     if (!timeLeft) {
       onCountdownOver();
-      console.log('to');
       return;
     }
     const intervalId = setInterval(() => {
