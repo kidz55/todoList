@@ -2,7 +2,9 @@ import React, { useMemo, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import propTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { isRequired, isInTheFuture, validate } from '../helpers';
+import {
+  isRequired, isInTheFuture, isValidDate, validate,
+} from '../helpers';
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -20,7 +22,7 @@ const Form = ({
         return isRequired(v);
       },
       deadLine(v) {
-        return isInTheFuture(v);
+        return isValidDate(v) && isInTheFuture(v);
       },
     };
     return validate(form, validator);
