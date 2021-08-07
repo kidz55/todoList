@@ -20,14 +20,15 @@ const TimeLeftCountDown = ({ deadLine, onCountdownOver }) => {
     }, 1000);
     // eslint-disable-next-line consistent-return
     return () => clearInterval(intervalId);
-  }, [timeLeft]);
+  }, [timeLeft, onCountdownOver]);
 
   const getTimeLeft = useMemo(
     () => {
       if (timeLeft <= 0) {
         return 'expired';
       }
-      return new Date(timeLeft * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0];
+      const duration = moment.duration(timeLeft, 'seconds');
+      return `${duration.days()}d:${duration.hours()}h:${duration.minutes()}m:${duration.seconds()}s`;
     },
     [timeLeft],
   );

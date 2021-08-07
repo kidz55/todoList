@@ -57,12 +57,13 @@ const Form = ({
         maxRows={4}
       />
       <TextField
+        data-test-text-field-date
         id="datetime-local"
         label="Deadline"
         type="datetime-local"
         className={classes.textField}
         error={errors.deadLine && isDirty}
-        defaultValue={form.deadLine}
+        value={form.deadLine || ''}
         onChange={(event) => {
           onUpdate({ ...form, deadLine: event.target.value });
         }}
