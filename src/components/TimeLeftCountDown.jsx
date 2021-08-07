@@ -13,6 +13,7 @@ const TimeLeftCountDown = ({ deadLine, onCountdownOver }) => {
   useEffect(() => {
     if (!timeLeft) {
       onCountdownOver();
+      console.log('to');
       return;
     }
     const intervalId = setInterval(() => {
@@ -20,7 +21,7 @@ const TimeLeftCountDown = ({ deadLine, onCountdownOver }) => {
     }, 1000);
     // eslint-disable-next-line consistent-return
     return () => clearInterval(intervalId);
-  }, [timeLeft, onCountdownOver]);
+  }, [timeLeft]);
 
   const getTimeLeft = useMemo(
     () => {
