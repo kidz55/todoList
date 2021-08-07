@@ -2,9 +2,11 @@ import React from 'react';
 import { mount } from 'enzyme';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Provider } from 'react-redux';
-import TodoList from '../src/components/TodoList';
+import TodoList from '../src/TodoList';
 import TodoItem from '../src/components/TodoItem';
 import configureStore from '../src/store/index';
+import AddTodoItem from '../src/components/AddTodoItem';
+import Sync from '../src/components/Sync';
 
 describe('TodoList', () => {
   const store = configureStore();
@@ -41,17 +43,15 @@ describe('TodoList', () => {
     tree = mount(
       <Provider store={store}>
         <TodoList />
-      </Provider>
+      </Provider>,
     );
   });
-  it('should display the right amount of task', () => {
-    expect(tree.find(TodoItem).length).toEqual(4);
+  it('should match snapshot', () => {
+    expect(tree).toMatchSnapshot();
   });
-  it('should dispatch a add task action when clicking the last task', () => {
-    const addButton = tree.find(AddCircleOutlineIcon);
-    expect(addButton.length).toEqual(1);
-    addButton.simulate('click');
-    tree.update();
-    expect(tree.find(TodoItem).length).toEqual(5);
+  it('should display the right components', () => {
+    expect(tree.find(TodoItem).length).toEqual(3);
+    expect(tree.find(AddTodoItem).length).toEqual(1);
+    expect(tree.find(Sync).length).toEqual(1);
   });
 });

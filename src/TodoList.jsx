@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import { useSelector, useDispatch } from 'react-redux';
 import TodoItem from './components/TodoItem';
+import ListItem from '@material-ui/core/ListItem';
 import AddTodoItem from './components/AddTodoItem';
 import Sync from './components/Sync';
 
@@ -19,8 +20,6 @@ const TodoList = () => {
   const tasks = useSelector((state) => Object.values(state.tasks));
   const status = useSelector((state) => state.status);
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState(false);
-
   useEffect(() => {
     dispatch({ type: 'GET_TASKS' });
   }, []);
@@ -30,12 +29,7 @@ const TodoList = () => {
   };
 
   const createTask = async (task) => {
-    setLoading(true);
-    try {
-      await dispatch({ type: 'ADD_TASK', task });
-    } finally {
-      setLoading(false);
-    }
+    dispatch({ type: 'ADD_TASK', task });
   };
 
   const removeTask = (task) => {
@@ -47,6 +41,7 @@ const TodoList = () => {
 
   return (
     <div>
+      <h1>TODO LIST</h1>
       <List className={classes.root}>
         {tasks.map((task) => (
           <TodoItem
@@ -58,7 +53,7 @@ const TodoList = () => {
         ))}
         <AddTodoItem
           key="add-task"
-          isLoading={isLoading}
+          isLoading={status === 'syncing'}
           onTaskAdd={createTask}
         />
       </List>

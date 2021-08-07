@@ -4,10 +4,9 @@ import propTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Form from './Form';
 
-const AddTodoItem = ({ onTaskAdd, isLoading }) => {
+const AddTodoItem = ({ onTaskAdd }) => {
   const task = {
     title: '',
     status: 'incomplete',
@@ -21,26 +20,24 @@ const AddTodoItem = ({ onTaskAdd, isLoading }) => {
     setDraftTask(task);
   };
   return (
-    <ListItem key="new-task" dense autoFocus>
+    <ListItem key="new-task" dense autoFocus data-test-add-item>
       <ListItemIcon>
-        {isLoading ? (
-          <CircularProgress size={30} />
-        ) : (
-          <IconButton
-            onClick={() => {
-              setDirty(true);
-              if (error) return;
-              onTaskAdd(draftTask);
-              resetTask();
-              setDirty(false);
-            }}
-            aria-label="add"
-          >
-            <AddCircleOutlineIcon />
-          </IconButton>
-        )}
+        <IconButton
+          data-test-add-task-button
+          onClick={() => {
+            setDirty(true);
+            if (error) return;
+            onTaskAdd(draftTask);
+            resetTask();
+            setDirty(false);
+          }}
+          aria-label="add"
+        >
+          <AddCircleOutlineIcon />
+        </IconButton>
       </ListItemIcon>
       <Form
+        data-test-add-task-form
         form={draftTask}
         onError={setError}
         isDirty={isDirty}

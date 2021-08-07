@@ -16,9 +16,9 @@ export function* fetchTasks() {
 }
 
 export function* updateTask(action) {
-  yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
-  yield delay(500);
   const { task } = action;
+  yield delay(500);
+  yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
     yield call(Api.put, `/tasks/${task.id}`, task);
     yield put({ type: 'UPDATE_STATUS', status: 'synced' });
@@ -30,6 +30,7 @@ export function* updateTask(action) {
 
 export function* addTask(action) {
   const { task } = action;
+  yield delay(500);
   yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
     yield call(Api.post, '/tasks', task);
@@ -42,8 +43,8 @@ export function* addTask(action) {
 }
 
 export function* removeTask(action) {
-  yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   yield delay(500);
+  yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   const { task } = action;
   try {
     yield call(Api.delete, `/tasks/${task.id}`);

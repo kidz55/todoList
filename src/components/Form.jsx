@@ -3,7 +3,9 @@ import TextField from '@material-ui/core/TextField';
 import propTypes from 'prop-types';
 import { isRequired, validate } from '../helpers';
 
-const Form = ({ form, onUpdate, onError, isDirty }) => {
+const Form = ({
+  form, onUpdate, onError, isDirty,
+}) => {
   const errors = useMemo(() => {
     const validator = {
       title(v) {
@@ -21,6 +23,7 @@ const Form = ({ form, onUpdate, onError, isDirty }) => {
   return (
     <form autoComplete="off">
       <TextField
+        data-test-text-field-title
         placeholder="Task title"
         required
         error={errors.title && isDirty}
@@ -31,6 +34,7 @@ const Form = ({ form, onUpdate, onError, isDirty }) => {
         }}
       />
       <TextField
+        data-test-text-field-desc
         placeholder="Task description"
         label="description"
         value={form.description}

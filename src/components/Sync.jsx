@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import SyncProblemIcon from '@material-ui/icons/SyncProblem';
-import SyncIcon from '@material-ui/icons/Sync';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 import propTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,6 +15,9 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignContent: 'center',
   },
+  text: {
+    marginLeft: '0.2rem',
+  },
 }));
 
 const Sync = ({ status }) => {
@@ -25,26 +28,26 @@ const Sync = ({ status }) => {
         switch (status) {
           case 'syncing': return (
             <div className={classes.wrapper}>
-              <SyncIcon color="info" />
-              <span>Syncing</span>
+              <CircularProgress size={20} />
+              <span className={classes.text}>Syncing</span>
             </div>
           );
           case 'synced': return (
             <div className={classes.wrapper}>
               <CheckCircleOutlineIcon color="secondary" />
-              <span>Synced</span>
+              <span className={classes.text}>Synced</span>
             </div>
           );
           case 'unsynced': return (
             <div className={classes.wrapper}>
-              <PriorityHighIcon color="info" />
-              Unsynced
+              <PriorityHighIcon color="action" />
+              <span className={classes.text}>Unsynced</span>
             </div>
           );
           case 'error': return (
             <div className={classes.wrapper}>
               <SyncProblemIcon color="error" />
-              Error during syncing
+              <span className={classes.text}>Error during syncing</span>
             </div>
           );
           default: return null;

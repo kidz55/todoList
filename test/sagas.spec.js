@@ -1,7 +1,8 @@
-import { put, call, select } from 'redux-saga/effects';
+import { runSaga } from 'redux-saga';
 import {
   fetchTasks, updateTask, addTask, removeTask,
 } from '../src/store/sagas';
+import Api from '../src/api/index';
 
 describe('sagas', () => {
   const tasks = [
@@ -13,65 +14,62 @@ describe('sagas', () => {
       dateCreated: 'August 19, 1975 23:17:30',
     },
   ];
-  it('should run fetchTask correctly', () => {
-    const generator = fetchTasks();
-    let next = generator.next();
+  it('should run fetchTask correctly', async () => {
+    const httpRequest = jest.spyOn(Api, 'get')
+      .mockResolvedValue({
+        data: tasks,
+      });
 
-    expect(next.value.payload.args).toEqual(['/tasks']);
-    expect(next.value.type).toEqual('CALL');
-
-    next = generator.next(tasks);
-    expect(next.value.payload).toEqual({
-      action: {
-        tasks,
-        type: 'SET_TASKS',
-      },
-    });
-    expect(next.value.type).toEqual('PUT');
+    const dispatched = [];
+    await runSaga({
+      dispatch: (action) => dispatched.push(action),
+    }, fetchTasks);
+    expect(httpRequest).toHaveBeenCalledTimes(1);
+    expect(dispatched[0]).toEqual({ status: 'syncing', type: 'UPDATE_STATUS' });
+    expect(dispatched[1]).toEqual({ tasks, type: 'SET_TASKS' });
+    httpRequest.mockClear();
   });
-  it('should add task correctly', () => {
-    const newTask = tasks[0];
-    const generator = addTask(newTask);
-    let next = generator.next();
+  it('should add task correctly', async () => {
+    const httpRequest = jest.spyOn(Api, 'post')
+      .mockResolvedValue({
+        data: tasks[0],
+      });
+    const dispatched = [];
+    await runSaga({
+      dispatch: (action) => dispatched.push(action),
+    }, addTask, { task: tasks[0] });
 
-    expect(next.value.payload.args).toEqual(['/tasks', newTask]);
-    expect(next.value.type).toEqual('CALL');
-
-    next = generator.next(newTask);
-    expect(next.value.payload.action).toEqual({
-      task: newTask,
-      type: 'ADD_TASK',
-    });
-    expect(next.value.type).toEqual('PUT');
+    expect(httpRequest).toHaveBeenCalledTimes(1);
+    expect(dispatched[0]).toEqual({ status: 'syncing', type: 'UPDATE_STATUS' });
+    expect(dispatched[1]).toEqual({ type: 'GET_TASKS' });
+    httpRequest.mockClear();
   });
-  it('should update task correctly', () => {
-    const updatedTask = tasks[0];
-    const generator = updateTask(updatedTask);
-    let next = generator.next();
+  it('should update task correctly', async () => {
+    const httpRequest = jest.spyOn(Api, 'put')
+      .mockResolvedValue({
+        data: tasks[0],
+      });
+    const dispatched = [];
+    await runSaga({
+      dispatch: (action) => dispatched.push(action),
+    }, updateTask, { task: tasks[0] });
 
-    expect(next.value.payload.args).toEqual(['/tasks/1234', updatedTask]);
-    expect(next.value.type).toEqual('CALL');
-
-    next = generator.next(updatedTask);
-    expect(next.value.payload.action).toEqual({
-      task: updatedTask,
-      type: 'UPDATE_TASK',
-    });
-    expect(next.value.type).toEqual('PUT');
+    expect(httpRequest).toHaveBeenCalledTimes(1);
+    expect(dispatched[0]).toEqual({ status: 'syncing', type: 'UPDATE_STATUS' });
+    httpRequest.mockClear();
   });
-  it('should remove task correctly', () => {
-    const toRemove = tasks[0];
-    const generator = removeTask(toRemove);
-    let next = generator.next();
+  it('should remove task correctly', async () => {
+    const httpRequest = jest.spyOn(Api, 'delete')
+      .mockResolvedValue({
+        data: tasks[0],
+      });
+    const dispatched = [];
+    await runSaga({
+      dispatch: (action) => dispatched.push(action),
+    }, removeTask, { task: tasks[0] });
 
-    expect(next.value.payload.args).toEqual(['/tasks/1234']);
-    expect(next.value.type).toEqual('CALL');
-
-    next = generator.next(toRemove);
-    expect(next.value.payload.action).toEqual({
-      task: toRemove,
-      type: 'REMOVE_TASK',
-    });
-    expect(next.value.type).toEqual('PUT');
+    expect(httpRequest).toHaveBeenCalledTimes(1);
+    expect(dispatched[0]).toEqual({ status: 'syncing', type: 'UPDATE_STATUS' });
+    httpRequest.mockClear();
   });
 });

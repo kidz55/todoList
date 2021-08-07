@@ -35,9 +35,10 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
   };
 
   return (
-    <ListItem key={draftTask.id} dense divider>
+    <ListItem key={draftTask.id} dense divider data-test-item-todo>
       <ListItemIcon>
         <Checkbox
+          data-test-item-checkbox
           edge="start"
           checked={draftTask.status === 'completed'}
           tabIndex={-1}
@@ -54,6 +55,7 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
       </ListItemIcon>
       {isEditing ? (
         <Form
+          data-text-item-form
           form={draftTask}
           onError={setError}
           isDirty={isDirty}
@@ -61,6 +63,7 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
         />
       ) : (
         <ListItemText
+          data-text-item-text
           className={draftTask.status === 'completed' ? classes.completed : ''}
           primary={draftTask.title}
           secondary={draftTask.description}
@@ -68,6 +71,7 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
       )}
       <ListItemSecondaryAction>
         <IconButton
+          data-text-item-remove
           onClick={() => {
             onTaskRemove(draftTask);
           }}
@@ -76,6 +80,7 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
         </IconButton>
         {isEditing ? (
           <IconButton
+            data-text-item-save
             onClick={() => {
               setDirty(true);
               if (error) return;
@@ -90,6 +95,7 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
           </IconButton>
         ) : (
           <IconButton
+            data-text-item-edit
             onClick={() => toggleEditMode()}
             edge="end"
             aria-label="edit"
