@@ -1,5 +1,5 @@
 import {
-  put, all, call, takeLatest, delay,
+  put, all, call, takeLatest, debounce,
 } from 'redux-saga/effects';
 import Api from '../api';
 
@@ -17,7 +17,6 @@ export function* fetchTasks() {
 
 export function* updateTask(action) {
   const { task } = action;
-  yield delay(500);
   yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
     yield call(Api.put, `/tasks/${task.id}`, task);
@@ -30,7 +29,6 @@ export function* updateTask(action) {
 
 export function* addTask(action) {
   const { task } = action;
-  yield delay(500);
   yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
     yield call(Api.post, '/tasks', task);
@@ -43,7 +41,6 @@ export function* addTask(action) {
 }
 
 export function* removeTask(action) {
-  yield delay(500);
   yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   const { task } = action;
   try {
@@ -60,15 +57,15 @@ function* watchFetchTasks() {
 }
 
 function* watchUpdateTask() {
-  yield takeLatest('UPDATE_TASK', updateTask);
+  yield debounce(500, 'UPDATE_TASK', updateTask);
 }
 
 function* watchAddTask() {
-  yield takeLatest('ADD_TASK', addTask);
+  yield debounce(500, 'ADD_TASK', addTask);
 }
 
 function* watchRemoveTask() {
-  yield takeLatest('REMOVE_TASK', removeTask);
+  yield debounce(500, 'REMOVE_TASK', removeTask);
 }
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
