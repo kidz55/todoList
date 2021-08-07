@@ -37,6 +37,8 @@ Every calls are made in the background thanks to redux saga ( great tool by the 
 
 I made sure to inform the user when the data is synchronised with the backend.
 
+I avoid useless calls, for example when a user save a task without editing, I will not make the call.
+
 I made sure that the components respect the single responsability principle.
 
 Components are also not connected to the redux-store. which make them easily reusable or integrable in a component library
