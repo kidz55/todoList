@@ -1,5 +1,5 @@
 import {
-  put, all, call, takeLatest, debounce,
+  put, all, call, takeLatest,
 } from 'redux-saga/effects';
 import Api from '../api';
 
@@ -57,15 +57,15 @@ function* watchFetchTasks() {
 }
 
 function* watchUpdateTask() {
-  yield debounce(500, 'UPDATE_TASK', updateTask);
+  yield takeLatest('UPDATE_TASK', updateTask);
 }
 
 function* watchAddTask() {
-  yield debounce(500, 'ADD_TASK', addTask);
+  yield takeLatest('ADD_TASK', addTask);
 }
 
 function* watchRemoveTask() {
-  yield debounce(500, 'REMOVE_TASK', removeTask);
+  yield takeLatest('REMOVE_TASK', removeTask);
 }
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once

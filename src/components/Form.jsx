@@ -1,20 +1,28 @@
 import React, { useMemo, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import propTypes from 'prop-types';
-import { isRequired, validate } from '../helpers';
+import { makeStyles } from '@material-ui/core/styles';
+import { isRequired, isInTheFuture, validate } from '../helpers';
 
-const Form = ({
-  form, onUpdate, onError, isDirty,
-}) => {
+const useStyles = makeStyles(() => ({
+  textField: {
+    paddingTop: '0.2.rem',
+  },
+}));
+
+const Form = ({ form, onUpdate, onError, isDirty }) => {
+  const classes = useStyles();
   const errors = useMemo(() => {
     const validator = {
       title(v) {
         return isRequired(v);
       },
+      deadLine(v) {
+        return isInTheFuture(v);
+      },
     };
     return validate(form, validator);
   }, [form]);
-
   useEffect(() => {
     const hasErrors = Object.values(errors).some((v) => v);
     onError(hasErrors);
@@ -26,6 +34,7 @@ const Form = ({
         data-test-text-field-title
         placeholder="Task title"
         required
+        className={classes.textField}
         error={errors.title && isDirty}
         value={form.title}
         label="title"
@@ -37,12 +46,27 @@ const Form = ({
         data-test-text-field-desc
         placeholder="Task description"
         label="description"
+        className={classes.textField}
         value={form.description}
         onChange={(event) => {
           onUpdate({ ...form, description: event.target.value });
         }}
         multiline
         maxRows={4}
+      />
+      <TextField
+        id="datetime-local"
+        label="Deadline"
+        type="datetime-local"
+        className={classes.textField}
+        error={errors.deadLine && isDirty}
+        defaultValue={form.deadLine}
+        onChange={(event) => {
+          onUpdate({ ...form, deadLine: event.target.value });
+        }}
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
     </form>
   );
@@ -54,6 +78,7 @@ Form.propTypes = {
   isDirty: propTypes.bool.isRequired,
   form: propTypes.shape({
     title: propTypes.string,
+    deadLine: propTypes.string,
     description: propTypes.string,
   }).isRequired,
 };
