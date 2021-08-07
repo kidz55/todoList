@@ -19,6 +19,7 @@ What can you do with it:
 - toggle the status of your todo list ( completed or not )
 - remove a task from the todo list
 - Set an expiration date for a task (extra)
+- Added a filter for expired tasks (extra)
 
 ## Explanation
 
