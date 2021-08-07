@@ -18,6 +18,7 @@ What can you do with it:
 - add task to the todo list ( title and description )
 - toggle the status of your todo list ( completed or not )
 - remove a task from the todo list
+- Set an expiration date for a task (extra)
 
 ## Explanation
 
@@ -42,4 +43,4 @@ Components are also not connected to the redux-store. which make them easily reu
 
 Only the principal TodoList view is feeded with the store data and feed the children through props.
 
-The principal view handle all the dispatch functions
+The principal view handle all the dispatch functions. I usually only allow the high order views to connect with the store / dispatch infos, it avoid too much dependency mess and it makes the data flow cleaner in my opinion.
