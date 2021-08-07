@@ -7,6 +7,10 @@ import {
 } from '../helpers';
 
 const useStyles = makeStyles(() => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   textField: {
     paddingTop: '0.2.rem',
   },
@@ -33,7 +37,7 @@ const Form = ({
   }, [errors, onError]);
 
   return (
-    <form autoComplete="off">
+    <form autoComplete="off" className={classes.form}>
       <TextField
         data-test-text-field-title
         placeholder="Task title"

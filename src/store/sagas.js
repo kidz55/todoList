@@ -3,10 +3,13 @@ import {
 } from 'redux-saga/effects';
 import Api from '../api';
 
-export function* fetchTasks() {
+export function* fetchTasks(action) {
+  const { filter } = action;
   yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
-    const { data: tasks } = yield call(Api.get, '/tasks');
+    let url = '/tasks';
+    if (filter) url += `?filter=${filter}`;
+    const { data: tasks } = yield call(Api.get, url);
     yield put({ type: 'SET_TASKS', tasks });
     yield put({ type: 'UPDATE_STATUS', status: 'synced' });
   } catch (error) {

@@ -23,7 +23,7 @@ describe('sagas', () => {
     const dispatched = [];
     await runSaga({
       dispatch: (action) => dispatched.push(action),
-    }, fetchTasks);
+    }, fetchTasks, { type: 'GET_TASKS' });
     expect(httpRequest).toHaveBeenCalledTimes(1);
     expect(dispatched[0]).toEqual({ status: 'syncing', type: 'UPDATE_STATUS' });
     expect(dispatched[1]).toEqual({ tasks, type: 'SET_TASKS' });
