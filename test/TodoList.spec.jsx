@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Provider } from 'react-redux';
 import TodoList from '../src/TodoList';
 import TodoItem from '../src/components/TodoItem';

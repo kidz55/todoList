@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import { useSelector, useDispatch } from 'react-redux';
 import TodoItem from './components/TodoItem';
-import ListItem from '@material-ui/core/ListItem';
 import AddTodoItem from './components/AddTodoItem';
 import Sync from './components/Sync';
 
@@ -22,7 +21,7 @@ const TodoList = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: 'GET_TASKS' });
-  }, []);
+  }, [dispatch]);
 
   const updateTask = (task) => {
     dispatch({ type: 'UPDATE_TASK', task });

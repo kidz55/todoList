@@ -47,13 +47,8 @@ const AddTodoItem = ({ onTaskAdd }) => {
   );
 };
 
-AddTodoItem.defaultProps = {
-  isLoading: false,
-};
-
 AddTodoItem.propTypes = {
   onTaskAdd: propTypes.func.isRequired,
-  isLoading: propTypes.bool,
 };
 
 export default AddTodoItem;
