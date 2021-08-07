@@ -1,5 +1,6 @@
 const initialState = {
   tasks: {},
+  error: null,
 };
 
 export default (state = initialState, action) => {
@@ -17,18 +18,25 @@ export default (state = initialState, action) => {
         }, {}),
       };
     case 'REMOVE_TASK': {
-      const { tasks } = state;
-      if (tasks[action.task.id]) {
-        delete tasks[action.task.id];
-      }
       return {
         ...state,
+        tasks: Object.keys(state.tasks).filter((id) => id !== action.task.id).reduce((obj, key) => {
+          // eslint-disable-next-line no-param-reassign
+          obj[key] = state.tasks[key];
+          return obj;
+        }, {}),
       };
     }
     case 'UPDATE_TASK': {
       return {
         ...state,
         tasks: { ...state.tasks, [action.task.id]: action.task },
+      };
+    }
+    case 'TASK_REQ_FAILED': {
+      return {
+        ...state,
+        error: action.error,
       };
     }
     default:

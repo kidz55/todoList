@@ -3,7 +3,7 @@ import { hot } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import configureStore from './store/index';
 import './App.css';
-import TodoList from './components/TodoList';
+import TodoList from './TodoList';
 
 const store = configureStore();
 const App = () => (
