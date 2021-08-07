@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useSelector, useDispatch } from 'react-redux';
 import TodoItem from './components/TodoItem';
 import AddTodoItem from './components/AddTodoItem';
+import Sync from './components/Sync';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = () => {
   const classes = useStyles();
   const tasks = useSelector((state) => Object.values(state.tasks));
+  const status = useSelector((state) => state.status);
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
 
@@ -61,10 +62,7 @@ const TodoList = () => {
           onTaskAdd={createTask}
         />
       </List>
-      <div>
-        <CheckCircleOutlineIcon color="secondary" />
-        Synced
-      </div>
+      <Sync status={status} />
     </div>
   );
 };

@@ -1,10 +1,16 @@
 const initialState = {
   tasks: {},
   error: null,
+  status: '',
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'UPDATE_STATUS':
+      return {
+        ...state,
+        status: action.status,
+      };
     case 'SET_TASKS':
       return {
         ...state,

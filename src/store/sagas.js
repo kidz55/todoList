@@ -4,41 +4,53 @@ import {
 import Api from '../api';
 
 export function* fetchTasks() {
+  yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
     const { data: tasks } = yield call(Api.get, '/tasks');
     yield put({ type: 'SET_TASKS', tasks });
+    yield put({ type: 'UPDATE_STATUS', status: 'synced' });
   } catch (error) {
     yield put({ type: 'TASK_REQ_FAILED', error });
+    yield put({ type: 'UPDATE_STATUS', status: 'error' });
   }
 }
 
 export function* updateTask(action) {
+  yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   yield delay(500);
   const { task } = action;
   try {
     yield call(Api.put, `/tasks/${task.id}`, task);
+    yield put({ type: 'UPDATE_STATUS', status: 'synced' });
   } catch (error) {
     yield put({ type: 'TASK_REQ_FAILED', error });
+    yield put({ type: 'UPDATE_STATUS', status: 'error' });
   }
 }
 
 export function* addTask(action) {
   const { task } = action;
+  yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
     yield call(Api.post, '/tasks', task);
     yield put({ type: 'GET_TASKS' });
+    yield put({ type: 'UPDATE_STATUS', status: 'synced' });
   } catch (error) {
     yield put({ type: 'TASK_REQ_FAILED', error });
+    yield put({ type: 'UPDATE_STATUS', status: 'error' });
   }
 }
 
 export function* removeTask(action) {
+  yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   yield delay(500);
   const { task } = action;
   try {
     yield call(Api.delete, `/tasks/${task.id}`);
+    yield put({ type: 'UPDATE_STATUS', status: 'synced' });
   } catch (error) {
     yield put({ type: 'TASK_REQ_FAILED', error });
+    yield put({ type: 'UPDATE_STATUS', status: 'error' });
   }
 }
 

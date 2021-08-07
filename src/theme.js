@@ -1,4 +1,4 @@
-import { red } from '@material-ui/core/colors';
+import { red, yellow } from '@material-ui/core/colors';
 import { createTheme } from '@material-ui/core/styles';
 
 // A custom theme for this app
@@ -12,6 +12,9 @@ const theme = createTheme({
     },
     error: {
       main: red.A400,
+    },
+    info: {
+      main: yellow.A400,
     },
     background: {
       default: '#fafafa',
