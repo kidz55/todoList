@@ -10,7 +10,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Form = ({ form, onUpdate, onError, isDirty }) => {
+const Form = ({
+  form, onUpdate, onError, isDirty,
+}) => {
   const classes = useStyles();
   const errors = useMemo(() => {
     const validator = {
