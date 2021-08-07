@@ -29,7 +29,12 @@ const TimeLeftCountDown = ({ deadLine, onCountdownOver }) => {
         return 'expired';
       }
       const duration = moment.duration(timeLeft, 'seconds');
-      return `${duration.days()}d:${duration.hours()}h:${duration.minutes()}m:${duration.seconds()}s`;
+      let timeLeftFormat = '';
+      if (duration.days() > 0) timeLeftFormat += `${duration.days()}d:`;
+      if (duration.hours() > 0) timeLeftFormat += `${duration.hours()}h:`;
+      if (duration.minutes() > 0) timeLeftFormat += `${duration.minutes()}m:`;
+      if (duration.seconds() > 0) timeLeftFormat += `${duration.seconds()}s`;
+      return timeLeftFormat;
     },
     [timeLeft],
   );
