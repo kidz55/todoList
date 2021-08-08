@@ -17,16 +17,19 @@ describe('sagas', () => {
   it('should run fetchTask correctly', async () => {
     const httpRequest = jest.spyOn(Api, 'get')
       .mockResolvedValue({
-        data: tasks,
+        data: {
+          rows: tasks,
+          count: 1,
+        },
       });
 
     const dispatched = [];
     await runSaga({
       dispatch: (action) => dispatched.push(action),
-    }, fetchTasks, { type: 'GET_TASKS' });
+    }, fetchTasks, { type: 'GET_TASKS', query: {} });
     expect(httpRequest).toHaveBeenCalledTimes(1);
     expect(dispatched[0]).toEqual({ status: 'syncing', type: 'UPDATE_STATUS' });
-    expect(dispatched[1]).toEqual({ tasks, type: 'SET_TASKS' });
+    expect(dispatched[1]).toEqual({ tasks: { rows: tasks, count: 1 }, type: 'SET_TASKS' });
     httpRequest.mockClear();
   });
   it('should add task correctly', async () => {

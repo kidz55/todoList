@@ -47,7 +47,7 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
 
   return (
     <ListItem
-      className={[classes.root, isExpired ? classes.expired : '']}
+      className={`${classes.root} ${isExpired ? classes.expired : ''}`}
       key={draftTask.id}
       dense
       divider

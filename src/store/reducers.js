@@ -1,5 +1,6 @@
 const initialState = {
   tasks: {},
+  tasksCount: 0,
   error: null,
   status: '',
 };
@@ -14,7 +15,8 @@ export default (state = initialState, action) => {
     case 'SET_TASKS':
       return {
         ...state,
-        tasks: action.tasks.reduce((acc, task) => {
+        tasksCount: action.tasks.count,
+        tasks: action.tasks.rows.reduce((acc, task) => {
           if (state.tasks[task.id]) {
             acc[task.id] = { ...state.tasks[task.id], ...task };
             return acc;

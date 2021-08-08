@@ -20,6 +20,7 @@ What can you do with it:
 - remove a task from the todo list
 - Set an expiration date for a task (extra)
 - Added a filter for expired tasks (extra)
+- The todolist is paginated with a max per page of 10 items (extra)
 
 ## Explanation
 

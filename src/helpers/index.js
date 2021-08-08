@@ -19,3 +19,5 @@ export const validate = (values = {}, validator = {}) => Object.entries(values)
     acc[key] = !isValid(value);
     return acc;
   }, {});
+
+export const encodeParams = (params) => Object.keys(params).filter((key) => params[key] !== '').map((key) => `${key}=${params[key]}`).join('&');

@@ -37,7 +37,7 @@ describe('TodoList', () => {
   beforeEach(() => {
     store.dispatch({
       type: 'SET_TASKS',
-      tasks,
+      tasks: { rows: tasks, count: 3 },
     });
     tree = mount(
       <Provider store={store}>

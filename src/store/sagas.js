@@ -2,14 +2,13 @@ import {
   put, all, call, takeLatest,
 } from 'redux-saga/effects';
 import Api from '../api';
+import { encodeParams } from '../helpers';
 
 export function* fetchTasks(action) {
-  const { filter } = action;
+  const { query } = action;
   yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
-    let url = '/tasks';
-    if (filter) url += `?filter=${filter}`;
-    const { data: tasks } = yield call(Api.get, url);
+    const { data: tasks } = yield call(Api.get, `/tasks?${encodeParams(query)}`);
     yield put({ type: 'SET_TASKS', tasks });
     yield put({ type: 'UPDATE_STATUS', status: 'synced' });
   } catch (error) {
@@ -31,11 +30,11 @@ export function* updateTask(action) {
 }
 
 export function* addTask(action) {
-  const { task } = action;
+  const { task, query } = action.payload;
   yield put({ type: 'UPDATE_STATUS', status: 'syncing' });
   try {
     yield call(Api.post, '/tasks', task);
-    yield put({ type: 'GET_TASKS' });
+    yield put({ type: 'GET_TASKS', query });
     yield put({ type: 'UPDATE_STATUS', status: 'synced' });
   } catch (error) {
     yield put({ type: 'TASK_REQ_FAILED', error });
