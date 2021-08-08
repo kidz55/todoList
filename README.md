@@ -11,7 +11,8 @@ yarn start # run the application locally
 
 ### Overview
 
-The todo list is written is React.
+The todo list is written is React. you can play with it here
+https://kidz-todo-list-backend.herokuapp.com/
 
 What can you do with it:
 
