@@ -14,6 +14,9 @@ import Form from './Form';
 import TimeLeftCountDown from './TimeLeftCountDown';
 
 const useStyles = makeStyles(() => ({
+  root: {
+    padding: '1rem',
+  },
   expired: {
     backgroundColor: '#D3D3D3',
   },
@@ -44,7 +47,7 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
 
   return (
     <ListItem
-      className={isExpired ? classes.expired : ''}
+      className={[classes.root, isExpired ? classes.expired : '']}
       key={draftTask.id}
       dense
       divider
@@ -53,10 +56,7 @@ const TodoItem = ({ task, onTaskUpdate, onTaskRemove }) => {
       <ListItemIcon>
         <Checkbox
           data-test-item-checkbox
-          edge="start"
           checked={draftTask.status === 'completed'}
-          tabIndex={-1}
-          disableRipple
           disabled={isExpired}
           onChange={() => {
             onTaskUpdate({
@@ -152,6 +152,7 @@ TodoItem.propTypes = {
     title: propTypes.string,
     status: propTypes.string,
     description: propTypes.string,
+    deadLine: propTypes.string,
   }).isRequired,
 };
 

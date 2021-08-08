@@ -9,6 +9,8 @@ import {
 const useStyles = makeStyles(() => ({
   form: {
     display: 'flex',
+    width: '100%',
+    paddingRight: '3rem',
     flexDirection: 'column',
   },
   textField: {

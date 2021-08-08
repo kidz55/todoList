@@ -3,7 +3,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import propTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Form from './Form';
 
 const AddTodoItem = ({ onTaskAdd }) => {
@@ -20,8 +20,15 @@ const AddTodoItem = ({ onTaskAdd }) => {
     setDraftTask(task);
   };
   return (
-    <ListItem key="new-task" dense autoFocus data-test-add-item>
-      <ListItemIcon>
+    <ListItem key="new-task" data-test-add-item>
+      <Form
+        data-test-add-task-form
+        form={draftTask}
+        onError={setError}
+        isDirty={isDirty}
+        onUpdate={setDraftTask}
+      />
+      <ListItemSecondaryAction>
         <IconButton
           data-test-add-task-button
           onClick={() => {
@@ -35,14 +42,7 @@ const AddTodoItem = ({ onTaskAdd }) => {
         >
           <AddCircleOutlineIcon />
         </IconButton>
-      </ListItemIcon>
-      <Form
-        data-test-add-task-form
-        form={draftTask}
-        onError={setError}
-        isDirty={isDirty}
-        onUpdate={setDraftTask}
-      />
+      </ListItemSecondaryAction>
     </ListItem>
   );
 };
